@@ -13,6 +13,12 @@ class HomeController extends GetxController {
 
   CountriesModel? countriesModel;
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchData();
+  }
+
   Future<void> fetchData() async {
     try {
       isLoading = true;
@@ -28,7 +34,6 @@ class HomeController extends GetxController {
       if (response.statusCode == 200) {
         final parsedJson = json.decode(response.body);
         countriesModel = CountriesModel.fromJson(parsedJson);
-
       } else {
         errorMessage = json.decode(response.body)['message'];
         isError = true;
