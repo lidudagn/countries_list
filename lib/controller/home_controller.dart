@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:countrieslist/constant.dart';
@@ -11,7 +12,7 @@ class HomeController extends GetxController {
   bool isError = false;
   String? errorMessage;
 
-  CountriesModel? countriesModel;
+  List<CountriesModel>? countriesModel;
 
   @override
   void onInit() {
@@ -31,14 +32,19 @@ class HomeController extends GetxController {
           'Content-Type': 'application/json',
         },
       );
+
+      log(response.statusCode.toString());
       if (response.statusCode == 200) {
-        final parsedJson = json.decode(response.body);
-        countriesModel = CountriesModel.fromJson(parsedJson);
+        // countriesModel = countriesModelFromJson(response.body);
+        final str = json.decode(response.body);
+        countriesModel = List<CountriesModel>.from(
+            str.map((x) => CountriesModel.fromJson(x)));
       } else {
         errorMessage = json.decode(response.body)['message'];
         isError = true;
       }
     } catch (e) {
+      log(e.toString());
       if (e is SocketException) {
         errorMessage = 'Please check your network and try again';
       } else {
