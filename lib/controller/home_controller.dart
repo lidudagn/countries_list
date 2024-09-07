@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:countrieslist/constant.dart';
 import 'package:countrieslist/model/countries_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,6 +12,8 @@ class HomeController extends GetxController {
   bool isLoading = false;
   bool isError = false;
   String? errorMessage;
+
+  TextEditingController searchController = TextEditingController();
 
   List<CountriesModel>? countriesModel;
 
