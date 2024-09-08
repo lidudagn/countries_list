@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:countrieslist/constant.dart';
 import 'package:countrieslist/model/countries_model.dart';
+import 'package:countrieslist/model/country_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +16,7 @@ class HomeController extends GetxController {
   TextEditingController searchController = TextEditingController();
 
   List<CountriesModel>? countriesModel;
+  List<CountryModel>? countryModel;
 
   @override
   void onInit() {
@@ -42,6 +43,40 @@ class HomeController extends GetxController {
         final str = json.decode(response.body);
         countriesModel = List<CountriesModel>.from(
             str.map((x) => CountriesModel.fromJson(x)));
+      } else {
+        errorMessage = json.decode(response.body)['message'];
+        isError = true;
+      }
+    } catch (e) {
+      log(e.toString());
+      if (e is SocketException) {
+        errorMessage = 'Please check your network and try again';
+      } else {
+        errorMessage = 'Something went wrong.';
+      }
+      isError = true;
+    } finally {
+      isLoading = false;
+    }
+    update();
+  }
+
+  Future<void> fetchDetailData(String name) async {
+    try {
+      isLoading = true;
+      update();
+      errorMessage = null;
+
+      final response = await http.get(
+        Uri.parse('$url/name/$name'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        countryModel = countyModelFromJson(response.body);
       } else {
         errorMessage = json.decode(response.body)['message'];
         isError = true;
