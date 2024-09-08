@@ -1,4 +1,5 @@
 import 'package:countrieslist/controller/home_controller.dart';
+import 'package:countrieslist/view/detailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -50,6 +51,10 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               final country = filteredCountries[index];
               return ListTile(
+                onTap: () {
+                  _.fetchDetailData(country.name!.common!);
+                  Get.to(() => const DetailsPage());
+                },
                 leading: Image.network(
                   country.flag!.png!,
                   width: 50,
