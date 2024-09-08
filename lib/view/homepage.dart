@@ -46,24 +46,27 @@ class HomePage extends StatelessWidget {
                   .contains(_.searchController.text.toLowerCase()))
               .toList();
 
-          return ListView.builder(
-            itemCount: filteredCountries.length,
-            itemBuilder: (context, index) {
-              final country = filteredCountries[index];
-              return ListTile(
-                onTap: () {
-                  _.fetchDetailData(country.name!.common!);
-                  Get.to(() => const DetailsPage());
-                },
-                leading: Image.network(
-                  country.flag!.png!,
-                  width: 50,
-                  height: 50,
-                ),
-                title: Text(country.name!.official!),
-                subtitle: Text(country.region!.name),
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: () => _.fetchData(),
+            child: ListView.builder(
+              itemCount: filteredCountries.length,
+              itemBuilder: (context, index) {
+                final country = filteredCountries[index];
+                return ListTile(
+                  onTap: () {
+                    _.fetchDetailData(country.name!.common!);
+                    Get.to(() => const DetailsPage());
+                  },
+                  leading: Image.network(
+                    country.flag!.png!,
+                    width: 50,
+                    height: 50,
+                  ),
+                  title: Text(country.name!.official!),
+                  subtitle: Text(country.region!.name),
+                );
+              },
+            ),
           );
         }
       }),
