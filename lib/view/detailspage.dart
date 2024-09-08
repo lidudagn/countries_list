@@ -18,15 +18,16 @@ class DetailsPage extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: double.infinity,
-                height: 320,
-                color: Colors.grey,
-                child: Image.network(
-                  _.countryModel!.first.flags!.png!,
-                  fit: BoxFit.cover,
+              if (_.countryModel!.first.flags != null)
+                Container(
+                  width: double.infinity,
+                  height: 320,
+                  color: Colors.grey,
+                  child: Image.network(
+                    _.countryModel!.first.flags!.png!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -46,23 +47,24 @@ class DetailsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                      text:
-                          "The capital city of ${_.countryModel!.first.name!.common!} : ",
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: "${_.countryModel!.first.capital!.first}: ",
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w700),
-                    ),
-                  ]),
+              if (_.countryModel!.first.capital != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text:
+                            "The capital city of ${_.countryModel!.first.name!.common!} : ",
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: "${_.countryModel!.first.capital!.first}: ",
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700),
+                      ),
+                    ]),
+                  ),
                 ),
-              ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -80,8 +82,8 @@ class DetailsPage extends StatelessWidget {
                   ]),
                 ),
               ),
-              const SizedBox(height: 10),
-              if (_.countryModel!.first.currencies!.chf != null)
+              if (_.countryModel!.first.currencies != null &&
+                  _.countryModel!.first.currencies!.chf != null)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: RichText(
